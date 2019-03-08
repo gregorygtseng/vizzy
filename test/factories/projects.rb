@@ -47,7 +47,17 @@ end
 
 def jenkins_plugin_settings
   {
-      enabled: false
+      enabled: false,
+      jenkins_username: {
+          value: SystemTestConfig.jenkins_username,
+          display_name: 'Jenkins Username',
+          placeholder: "Add jenkins username (e.g., 'jenkins.user')"
+      },
+      jenkins_password: {
+          value: SystemTestConfig.jenkins_password,
+          display_name: 'Jenkins Password',
+          placeholder: "Add jenkins password (e.g., 'XXXXXXXX')"
+      }
   }
 end
 

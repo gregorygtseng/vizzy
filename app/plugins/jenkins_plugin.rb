@@ -2,13 +2,30 @@ class JenkinsPlugin < Plugin
 
   def initialize(unique_id)
     super(unique_id)
-    @username = Rails.application.secrets.JENKINS_USERNAME
-    @password = Rails.application.secrets.JENKINS_PASSWORD
   end
 
   # Jenkins plugin does not require any project settings
   def add_plugin_settings_to_project(project)
-    super(project, {})
+    super(project, {
+        jenkins_username: {
+            value: get_jenkins_username(project),
+            display_name: 'Jenkins Username',
+            placeholder: "Add jenkins username (e.g., 'jenkins.user')"
+        },
+        jenkins_password: {
+            value: get_jenkins_password(project),
+            display_name: 'Jenkins Password',
+            placeholder: "Add jenkins password (e.g., 'XXXXXXXX')"
+        }
+    })
+  end
+
+  def get_jenkins_username(project)
+    get_plugin_setting_value(project, :jenkins_username)
+  end
+
+  def get_jenkins_password(project)
+    get_plugin_setting_value(project, :jenkins_password)
   end
 
   # Update display name and description for Jenkins build when Vizzy build is created
@@ -36,6 +53,12 @@ class JenkinsPlugin < Plugin
 
     @base_jenkins_url = build.url
     return {error: "Jenkins Build Url Blank"} if @base_jenkins_url.blank?
+
+    @username = get_jenkins_username(build.project)
+    return {error: "Jenkins Username Blank"} if @username.blank?
+
+    @password = get_jenkins_password(build.project)
+    return {error: "Jenkins Password Blank"} if @password.blank?
 
     find_or_create_request_service
 

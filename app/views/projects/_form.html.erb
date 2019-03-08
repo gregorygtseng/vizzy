@@ -40,7 +40,11 @@
               <% plugin_prefix = "plugin_settings[#{plugin_key}][#{setting}]" %>
 
               <label><%= setting_hash[:display_name] %></label>
-              <%= text_field_tag "#{plugin_prefix}[value]", setting_hash[:value], class: 'form-control', placeholder: setting_hash[:placeholder], style: 'width:500px' %>
+              <% if setting_hash[:display_name].downcase.include?("password") %>
+                <%= password_field_tag "#{plugin_prefix}[value]", setting_hash[:value], class: 'form-control', placeholder: setting_hash[:placeholder], style: 'width:500px' %>
+              <% else %>
+                <%= text_field_tag "#{plugin_prefix}[value]", setting_hash[:value], class: 'form-control', placeholder: setting_hash[:placeholder], style: 'width:500px' %>
+              <% end %>
 
               <!--Hidden Fields-->
               <%= hidden_field_tag "#{plugin_prefix}[display_name]", setting_hash[:display_name], class: 'form-control', style: 'width:500px' %>

@@ -23,4 +23,13 @@ class SystemTestConfig
   def self.bamboo_base_url
     Rails.application.secrets.BAMBOO_BASE_URL || 'https://bamboo.com'
   end
+
+  # Jenkins
+  def self.jenkins_username
+    Rails.application.secrets.JENKINS_USERNAME || 'jenkins.user'
+  end
+
+  def self.jenkins_password
+    Rails.application.secrets.JENKINS_PASSWORD || '1234'
+  end
 end
